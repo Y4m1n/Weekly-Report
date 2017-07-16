@@ -1,9 +1,12 @@
 import pandas as pd
+import os
 from pprint import *
-df= pd.read_csv('/Users/apple/Downloads/CommunityOverview.csv',encoding='utf-8')
+file_path='/Users/apple/Downloads/CommunityOverview.csv'
+df= pd.read_csv(file_path,encoding='utf-8')
 df=df.loc[:,['群名','入群人数','退群人数','在线用户数','互动用户数','互动用户率','互动次数']]
 # 找到最新群，干掉老的还有记录的宣传群
-xc_groups=[df[df['群名'].str.contains("{}S.+优达学城$".format(nd_name))] for nd_name in ['数据分析','前端开发','机器学习','深度学习']]
+xc_groups=[df[df['群名'].str.contains("{}S.+优达学城$".format(nd_name))] for nd_name in
+['数据分析','前端开发','机器学习','深度学习']]
 
 for groups in xc_groups:
     cohorts=[int(group[5]) for group in groups.群名]
@@ -21,3 +24,4 @@ for i in groups:
     print(len(i),i['入群人数'].sum(),i['退群人数'].sum(),i['在线用户数'].sum(),i['互动用户数'].sum(),i['互动用户率'].mean().round(2),i['互动次数'].sum())
 
 # python3 weekly.py | pbcopy- 别名wkl
+os.remove(file_path)
